@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import './Profile.css';
-import {Container, Row, Col, Card, CardImg, CardText, CardBody,
-    CardTitle, CardSubtitle, Button } from 'reactstrap';
+import {Link} from 'react-router-dom'
+import {Container, Row, Col, Card, CardText, CardBody,
+    CardTitle, Button } from 'reactstrap';
 
 
 class Profile extends Component {
@@ -21,7 +22,7 @@ class Profile extends Component {
                                     <CardText>
                                         Zobacz testy, które oczekują na rozwiązanie
                                     </CardText>
-                                    <Button>
+                                    <Button tag = {Link} to = "/student/tests">
                                         Przejdź
                                     </Button>
                                 </CardBody>
