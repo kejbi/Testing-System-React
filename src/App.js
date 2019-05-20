@@ -11,7 +11,7 @@ function App() {
       <div>
         <AppNavBar isAuthenticated = {true}/>
         <Route path="/" exact={true} component = {Home}/>
-        <Route path="/me" component = {Profile}/>
+        <Route path="/me" render = {() => <Profile isStudent = {false} />} />
       </div>
       
   );
