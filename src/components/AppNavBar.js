@@ -1,53 +1,67 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './AppNavBar.css';
-import {Navbar, Collapse, Nav, NavbarBrand, NavbarToggler, NavItem } from 'reactstrap';
-import {Link} from 'react-router-dom'
-
-function SignInOrLogout(props) {
-    if(props.isAuthenticated) {
-        return <NavItem><Link className="nav-link" to="/me">Log out</Link></NavItem>;
-    }
-    else {
-        return <NavItem><Link className="nav-link" to="/me">Sing in</Link></NavItem>;
-    }
-}
+import {
+  Navbar,
+  Collapse,
+  Nav,
+  NavbarBrand,
+  NavbarToggler,
+  NavItem
+} from 'reactstrap';
+import { Link, withRouter } from 'react-router-dom';
+import { logout } from './security/AuthService';
 
 class AppNavBar extends Component {
+  constructor(props) {
+    super(props);
 
-    constructor(props) {
-        super(props);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
 
-        this.state = {isOpen: false, isAuthenticated: false};
-        this.toggle = this.toggle.bind(this);
-    }
+  handleLogout() {
+    logout();
+    this.props.onLogout();
+  }
 
-    toggle() {
-        this.setState(
-            {isOpen: !this.state.isOpen}
-        );
-    }
-    componentDidMount(){
-        this.setState(
-            {isAuthenticated: this.props.isAuthenticated}
-        )
-    }
+  render() {
+    if (!this.props.isAuthenticated) {
+      return (
+        <Navbar className="navbar" expand="md">
+          <NavbarBrand className="nav-link" tag={Link} to="/">
+            TestThemAll
+          </NavbarBrand>
+          <NavbarToggler />
+          <Collapse navbar />
+          <Nav navbar>
+            <NavItem className="nav-link" tag={Link} to="/login">
+              Sign In
+            </NavItem>
+          </Nav>
+        </Navbar>
+      );
+    } else {
+      return (
+        <Navbar className="navbar" expand="md">
+          <NavbarBrand className="nav-link" tag={Link} to="/">
+            TestThemAll
+          </NavbarBrand>
 
-    render() {
-        return(
-            <Navbar className="navbar" expand="md">
-                <NavbarBrand>
-                    <Link className="nav-link" to="/">Test Them All</Link>
-                </NavbarBrand>
-                <NavbarToggler onClick={this.toggle}/>
-                <Collapse isOpen={this.state.isOpen} navbar>
-                    <Nav className="ml-auto" navbar>
-                        <SignInOrLogout isAuthenticated = {this.state.isAuthenticated}/>
-                    </Nav>
-                </Collapse>
-            
-            </Navbar>
-        ) 
+          <NavbarToggler />
+          <Collapse navbar />
+          <Nav navbar>
+            <NavItem
+              className="nav-link"
+              tag={Link}
+              to="/"
+              onClick={this.handleLogout}
+            >
+              Log Out
+            </NavItem>
+          </Nav>
+        </Navbar>
+      );
     }
+  }
 }
 
-export default AppNavBar;
+export default withRouter(AppNavBar);

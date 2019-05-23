@@ -1,14 +1,14 @@
 .navbar {
-    background-color: green;
-    color: aliceblue;
-    padding-left: 10%;
-    padding-right: 10%;
+  background-color: green;
+  color: aliceblue;
+  padding-left: 10%;
+  padding-right: 10%;
 }
 .nav-link {
-    color: aliceblue;
-    text-decoration: none;
+  color: aliceblue;
+  text-decoration: none;
 }
 
 .nav-link:hover {
-    color: wheat;
+  color: wheat;
 }
