@@ -42,7 +42,7 @@ class AppNavBar extends Component {
     } else {
       return (
         <Navbar className="navbar" expand="md">
-          <NavbarBrand className="nav-link" tag={Link} to="/">
+          <NavbarBrand className="nav-link" tag={Link} to="/me">
             TestThemAll
           </NavbarBrand>
 

@@ -1,4 +1,5 @@
 import decode from 'jwt-decode';
+import { BASE_URL } from '../constants';
 
 export function customFetch(url, options) {
   const headers = {
@@ -23,7 +24,7 @@ export function customFetch(url, options) {
 
 export function login(username, password) {
   // Get a token from api server using the fetch api
-  return customFetch('http://localhost:9090/signin', {
+  return customFetch(BASE_URL + 'signin', {
     method: 'POST',
     body: JSON.stringify({
       username,
@@ -66,5 +67,16 @@ export function logout() {
 
 export function getProfile() {
   // Using jwt-decode npm package to decode the token
-  return decode(getToken());
+  const token = decode(getToken());
+  console.log(token.role === 'ROLE_STUDENT');
+  if (token.role === 'ROLE_STUDENT') {
+    console.log(BASE_URL + 'students/' + token.sub);
+    return customFetch(BASE_URL + 'students/' + token.sub, {
+      method: 'GET'
+    });
+  } else {
+    return customFetch(BASE_URL + 'teachers/' + token.sub, {
+      method: 'GET'
+    });
+  }
 }

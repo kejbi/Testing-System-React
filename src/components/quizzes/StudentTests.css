@@ -1,0 +1,11 @@
+.container {
+  margin-top: 5vh;
+}
+
+.alert {
+  text-align: center;
+}
+
+.progress {
+  width: 90%;
+}

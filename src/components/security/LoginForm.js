@@ -54,7 +54,8 @@ class LoginForm extends Component {
         setToken(response.accessToken);
         this.props.onLogin();
       })
-      .catch(() => {
+      .catch(err => {
+        console.log(err);
         alert('bad credentials');
       });
   }
