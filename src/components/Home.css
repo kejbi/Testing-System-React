@@ -1,6 +1,18 @@
 .home-page {
-  width: 80%;
-  margin: auto;
-  text-align: center;
-  padding: 5%;
+  display: grid;
+}
+.item1 {
+  grid-column: 1;
+  grid-row: 1;
+  margin-bottom: 30px;
+}
+
+.item2 {
+  grid-column: 1;
+  grid-row: 2;
+  justify-self: center;
+}
+
+.logo {
+  border-radius: 12px;
 }
