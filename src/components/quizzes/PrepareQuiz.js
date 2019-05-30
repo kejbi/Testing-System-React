@@ -7,7 +7,8 @@ import {
   FormGroup,
   Label,
   Input,
-  Table
+  Table,
+  Alert
 } from 'reactstrap';
 import './PrepareQuiz.css';
 import { withRouter } from 'react-router-dom';
@@ -59,16 +60,22 @@ class PrepareQuiz extends Component {
   }
 
   handleSubmit() {
-    console.log(this.state);
-    customFetch(BASE_URL + 'quizzes', {
-      method: 'POST',
-      body: JSON.stringify({
-        groupId: this.state.groupid,
-        name: this.state.name,
-        teacherId: this.props.user.id,
-        questions: this.state.chosenQuestions
-      })
-    }).then(this.props.history.push('/me'));
+    if (
+      this.state.name === '' ||
+      this.state.chosenQuestions.toString() === ''
+    ) {
+      alert('Give name or add some questions!');
+    } else {
+      customFetch(BASE_URL + 'quizzes', {
+        method: 'POST',
+        body: JSON.stringify({
+          groupId: this.state.groupid,
+          name: this.state.name,
+          teacherId: this.props.user.id,
+          questions: this.state.chosenQuestions
+        })
+      }).then(this.props.history.push('/me'));
+    }
   }
 
   componentWillMount() {
@@ -92,71 +99,81 @@ class PrepareQuiz extends Component {
 
   render() {
     let i = 0;
-    return (
-      <Container className="container">
-        <Form>
-          <FormGroup>
-            <Label for="name">Quiz Name:</Label>
-            <Input
-              type="text"
-              name="name"
-              id="name"
-              placeholder="quiz name"
-              onChange={this.handleChange}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label for="exampleSelect">Group</Label>
-            <Input
-              type="select"
-              name="groupid"
-              id="groupid"
-              onChange={this.handleChange}
-            >
-              {this.state.groups.map(group => {
-                return <option value={group.id}>{group.name}</option>;
-              })}
-            </Input>
-          </FormGroup>
-          <AddQuestion onAdd={this.onAdd} />
-          <br />
-          <div className="question-table">
-            <Table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Question</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.questions.map(question => {
-                  return (
-                    <tr>
-                      <th>{++i}</th>
-                      <td>{question.question}</td>
-                      <td>
-                        <Button
-                          value={question.questionId}
-                          onClick={this.addFromList}
-                          disabled={this.state.disabled[question.questionId]}
-                        >
-                          Add
-                        </Button>
-                      </td>
-                    </tr>
-                  );
+    if (!this.props.user.student) {
+      return (
+        <Container className="container">
+          <Form>
+            <FormGroup>
+              <Label for="name">Quiz Name:</Label>
+              <Input
+                type="text"
+                name="name"
+                id="name"
+                placeholder="quiz name"
+                onChange={this.handleChange}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="exampleSelect">Group</Label>
+              <Input
+                type="select"
+                name="groupid"
+                id="groupid"
+                onChange={this.handleChange}
+              >
+                {this.state.groups.map(group => {
+                  return <option value={group.id}>{group.name}</option>;
                 })}
-              </tbody>
-            </Table>
-          </div>
+              </Input>
+            </FormGroup>
+            <AddQuestion onAdd={this.onAdd} />
+            <br />
+            <div className="question-table">
+              <Table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Question</th>
+                    <th />
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.questions.map(question => {
+                    return (
+                      <tr>
+                        <th>{++i}</th>
+                        <td>{question.question}</td>
+                        <td>
+                          <Button
+                            value={question.questionId}
+                            onClick={this.addFromList}
+                            disabled={this.state.disabled[question.questionId]}
+                          >
+                            Add
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            </div>
 
-          <Button color="primary" onClick={this.handleSubmit}>
-            Send
-          </Button>
-        </Form>
-      </Container>
-    );
+            <Button color="primary" onClick={this.handleSubmit}>
+              Send
+            </Button>
+          </Form>
+        </Container>
+      );
+    } else {
+      return (
+        <Container className="container">
+          <Alert color="danger" className="alert">
+            You're not a teacher!
+          </Alert>
+        </Container>
+      );
+    }
   }
 }
 

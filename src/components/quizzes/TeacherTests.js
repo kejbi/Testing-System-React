@@ -43,7 +43,7 @@ class TeacherTests extends Component {
                   <tr>
                     <td>{i++}</td>
                     <td>{quiz.name}</td>
-                    <td>10</td>
+                    <td>{quiz.numberOfQuestions}</td>
                     <td>
                       <Button
                         color="primary"
@@ -73,7 +73,7 @@ class TeacherTests extends Component {
       return (
         <Container className="container">
           <Alert color="danger" className="alert">
-            You're not a student!
+            You're not a teacher!
           </Alert>
         </Container>
       );

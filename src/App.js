@@ -15,13 +15,15 @@ import TestDeatails from './components/quizzes/TestDeatails';
 import SolvedTests from './components/quizzes/SolvedTests';
 import Results from './components/quizzes/Results';
 import AccountDetails from './components/AccountDetails';
+import { Spinner, Container } from 'reactstrap';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      user: null
+      user: null,
+      loading: false
     };
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -44,7 +46,33 @@ class App extends Component {
     });
     this.props.history.push('/');
   }
+
+  componentWillMount() {
+    if (loggedIn()) {
+      this.setState({
+        loading: true
+      });
+      getProfile().then(response => {
+        console.log(response);
+        this.setState({
+          user: response,
+          loading: false
+        });
+      });
+    }
+  }
+
   render() {
+    if (this.state.loading) {
+      return (
+        <div>
+          <AppNavBar isAuthenticated={loggedIn()} onLogout={this.logout} />
+          <Container>
+            <Spinner color="success" />
+          </Container>
+        </div>
+      );
+    }
     return (
       <div>
         <AppNavBar isAuthenticated={loggedIn()} onLogout={this.logout} />

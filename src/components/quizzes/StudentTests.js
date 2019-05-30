@@ -42,7 +42,7 @@ class StudentTests extends Component {
                   <tr>
                     <td>{i++}</td>
                     <td>{quiz.name}</td>
-                    <td>10</td>
+                    <td>{quiz.numberOfQuestions}</td>
 
                     <td>
                       <Button

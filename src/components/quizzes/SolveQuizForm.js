@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Container, Label, Input, Form, FormGroup, Button } from 'reactstrap';
+import {
+  Container,
+  Label,
+  Input,
+  Form,
+  FormGroup,
+  Button,
+  Alert
+} from 'reactstrap';
 import { customFetch } from '../security/AuthService';
 import { BASE_URL } from '../constants';
 import { withRouter } from 'react-router-dom';
@@ -50,70 +58,80 @@ class SolveQuizForm extends Component {
 
   render() {
     let i = 0;
-    return (
-      <Container className="container">
-        <Form>
-          {this.state.questions.map(question => {
-            return (
-              <FormGroup check>
-                <Label className="question">
-                  {'Question no. ' + ++i + '. ' + question.question}
-                </Label>
-                <div>
-                  <FormGroup check>
-                    <Label check>
-                      <Input
-                        type="radio"
-                        name={i - 1}
-                        value="1"
-                        onChange={this.handleOnChange}
-                      />
-                      {question.ans1}
-                    </Label>
-                  </FormGroup>
+    if (this.props.user.student) {
+      return (
+        <Container className="container">
+          <Form>
+            {this.state.questions.map(question => {
+              return (
+                <FormGroup check>
+                  <Label className="question">
+                    {'Question no. ' + ++i + '. ' + question.question}
+                  </Label>
+                  <div>
+                    <FormGroup check>
+                      <Label check>
+                        <Input
+                          type="radio"
+                          name={i - 1}
+                          value="1"
+                          onChange={this.handleOnChange}
+                        />
+                        {question.ans1}
+                      </Label>
+                    </FormGroup>
 
-                  <FormGroup check>
-                    <Label check>
-                      <Input
-                        type="radio"
-                        name={i - 1}
-                        value="2"
-                        onChange={this.handleOnChange}
-                      />
-                      {question.ans2}
-                    </Label>
-                  </FormGroup>
-                  <FormGroup check>
-                    <Label check>
-                      <Input
-                        type="radio"
-                        name={i - 1}
-                        value="3"
-                        onChange={this.handleOnChange}
-                      />
-                      {question.ans3}
-                    </Label>
-                  </FormGroup>
-                  <FormGroup check>
-                    <Label check>
-                      <Input
-                        type="radio"
-                        name={i - 1}
-                        value="4"
-                        onChange={this.handleOnChange}
-                      />
-                      {question.ans4}
-                    </Label>
-                  </FormGroup>
-                </div>
-              </FormGroup>
-            );
-          })}
-          <br />
-          <Button onClick={this.handleClick}>Submit</Button>
-        </Form>
-      </Container>
-    );
+                    <FormGroup check>
+                      <Label check>
+                        <Input
+                          type="radio"
+                          name={i - 1}
+                          value="2"
+                          onChange={this.handleOnChange}
+                        />
+                        {question.ans2}
+                      </Label>
+                    </FormGroup>
+                    <FormGroup check>
+                      <Label check>
+                        <Input
+                          type="radio"
+                          name={i - 1}
+                          value="3"
+                          onChange={this.handleOnChange}
+                        />
+                        {question.ans3}
+                      </Label>
+                    </FormGroup>
+                    <FormGroup check>
+                      <Label check>
+                        <Input
+                          type="radio"
+                          name={i - 1}
+                          value="4"
+                          onChange={this.handleOnChange}
+                        />
+                        {question.ans4}
+                      </Label>
+                    </FormGroup>
+                  </div>
+                </FormGroup>
+              );
+            })}
+            <br />
+            <Button onClick={this.handleClick}>Submit</Button>
+          </Form>
+        </Container>
+      );
+    } else {
+      return (
+        <Container className="container">
+          <Alert color="danger" className="alert">
+            You're not a student!
+          </Alert>
+        </Container>
+      );
+    }
   }
 }
 
