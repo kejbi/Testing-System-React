@@ -17,6 +17,7 @@ class SolveQuizForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isAnswered: [],
       questions: [],
       answers: []
     };
@@ -26,6 +27,12 @@ class SolveQuizForm extends Component {
   }
 
   handleClick() {
+    this.state.isAnswered.forEach(answer => {
+      if(!answer){
+        alert('ANswer all questions');
+        return;
+      }
+    })
     customFetch(BASE_URL + 'solved', {
       method: 'POST',
       body: JSON.stringify({
@@ -40,8 +47,11 @@ class SolveQuizForm extends Component {
 
   handleOnChange(event) {
     let newAnswers = this.state.answers;
+    let newAnswered = this.state.isAnswered;
+    newAnswered[event.target.name] = true;
     newAnswers[event.target.name] = event.target.value;
     this.setState({
+      isAnswered: newAnswered,
       answers: newAnswers
     });
   }
@@ -63,6 +73,11 @@ class SolveQuizForm extends Component {
         <Container className="container">
           <Form>
             {this.state.questions.map(question => {
+              let tab = this.state.isAnswered
+              tab.push(false);
+              this.setState({
+                isAnswered: tab
+              })
               return (
                 <FormGroup check>
                   <Label className="question">
